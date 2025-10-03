@@ -1,3 +1,4 @@
+from main import main
 class BackupManager:
 
     def __init__(self, collection_manager):
@@ -9,3 +10,6 @@ class BackupManager:
         self.backup_date = backup_date
         self.backup_location = backup_location
 
+
+if __name__ == "__main__":
+    main()
