@@ -1,8 +1,8 @@
 from main import main
 class BackupManager:
 
-    def __init__(self, collection_manager):
-        self.collection_manager = collection_manager
+    def __init__(self):
+        pass
 
     def add_backup(self, collection_object, backup_name, backup_date, backup_location):
         self.collection_object = collection_object
