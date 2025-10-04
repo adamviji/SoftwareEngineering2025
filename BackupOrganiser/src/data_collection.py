@@ -1,4 +1,3 @@
-
 class DataCollection:
     def __init__(self, name, description, creation_date, last_modified_date, still_updated):
         """__init__ vet python att den ska köra automatiskt"""
@@ -32,11 +31,11 @@ class DataCollection:
         """Listan som returneras med information"""
         info_list = [
             f"Name: {self.name}"
-            f"Description: {self.description}"
-            f"Created: {self.creation_date}"
-            f"Last Modified: {self.last_modified_date}"
-            f"Status: {status}"
-            f"Number of backups {number_of_backups}"
+            f" Description: {self.description}"
+            f" Created: {self.creation_date}"
+            f" Last Modified: {self.last_modified_date}"
+            f" Status: {status}"
+            f" Number of backups {number_of_backups}"
         ]
         """Körs inte om inte om listan är tom"""
         if self.backup_entries:
