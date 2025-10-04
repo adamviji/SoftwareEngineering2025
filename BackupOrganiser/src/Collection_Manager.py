@@ -1,18 +1,19 @@
 from main import main
-import Data_Collection
+from Data_Collection import DataCollection
 
 class CollectionManager:
 
     def __init__(self):
         self.collections = []
 
-    def add_collection(self, name, description, creation_date, modification_date, updated):
-        new_collection = Data_Collection()
+    def add_collection(self, name, description, creation_date, last_modified_date, still_updated):
+        """Skapar ett DataCollection objekt och lägger till det i listan"""
+        new_collection = DataCollection()
         new_collection.name = name
         new_collection.description = description
         new_collection.creation_date = creation_date
-        new_collection.modification_date = modification_date
-        new_collection.updated = updated
+        new_collection.last_modified_date = last_modified_date
+        new_collection.still_updated = still_updated
         self.collections.append(new_collection)
         # self.name = name
         # self.description = description
@@ -22,20 +23,23 @@ class CollectionManager:
 
 
     def overview(self):
+        """returnerar en lista med strängar, en sträng per DataCollection"""
         out = []
-        for i in self.collections:
-            out.append(i.brief_str)
+        for collection in self.collections:
+            out.append(collection.brief_str()[0])
         return out
 
 
     def detailed_overview(self):
+        """Returnerar en array med listor av strängar, en lista per DataCollection"""
         out = []
-        for i in self.collections:
-            out.append(i.full_str)
+        for collection in self.collections:
+            out.append(collection.brief_str())
         return out
 
 
     def info(collection_name):
+        """Returnerar en lista med strängar för en specifik DataCollection"""
         Data_Collection.full_str()
         pass
 
