@@ -1,13 +1,14 @@
-version: '3.8'
-
-services:
-  backup-organiser:
-    build: .
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./src:/app/src
-      - ./static:/app/static
-    environment:
-      - FLASK_ENV=development
-    command: python src/main.py
+# Hur den ska se ut?
+#
+Services:
+  BackupOrganiser:
+    Image: BackupOrganiser
+    Build: .
+    Ports:
+      - 5000:5000
+    Volumes:
+      - .:/main
+    Develop:
+      Watch:
+        - Action: restart
+          Path: .

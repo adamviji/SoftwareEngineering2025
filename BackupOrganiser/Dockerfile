@@ -1,17 +1,16 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
 
-WORKDIR /app
+WORKDIR /main
 
 # Copy requirements and install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 # Copy source code
-COPY src/ ./src/
-COPY static/ ./static/
-
+COPY . .
 # Expose Flask port
-EXPOSE 8080
+EXPOSE 5000
+ENV PYTHONUNBUFFERED="yes"
 
 # Run the application
-CMD ["python", "src/main.py"]
+ENTRYPOINT ["python3", "main.py"]

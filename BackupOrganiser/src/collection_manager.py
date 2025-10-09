@@ -66,3 +66,29 @@ class CollectionManager:
             if collection.name == collection_name:
                 return collection
         return None
+# TODO Byta variabel namn!!!
+    # def edit(self, collection_name, modification_date=None, updated=None):
+    #     """Modify the first data collection that maches collection_name.
+
+    #     Return the modified data collection.
+
+    #     """
+    #     dc = self.get(collection_name)
+    #     if dc and None != modification_date:
+    #         dc.modification_date = modification_date
+    #     if dc and None != updated:
+    #         dc.still_updated = updated
+    #     return dc
+
+    # def delete(self, collection_name):
+    #     """Delete the first data collection that matches collection_name.
+
+    #     Return True if a collection was found and deleted, otherwise False."""
+
+    #     old_len = len(self.__collections)
+    #     self.__collections = [
+    #         x for x in self.__collections if x.name != collection_name
+    #     ]
+    #     new_len = len(self.__collections)
+
+    #     return new_len == old_len - 1
