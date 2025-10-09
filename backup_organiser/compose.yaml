@@ -1,0 +1,13 @@
+# Hur den ska se ut?
+services:
+  backup_organiser:
+    image: backup_organiser
+    build: .
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/main
+    develop:
+      watch:
+        - action: restart
+          path: .
