@@ -1,0 +1,31 @@
+### add collection
+POST http://localhost:8080//api/collection
+Content-Type: application/json
+
+{
+    "name": "collection2",
+    "description": "description3",
+    "creation_date": "2025-08-10",
+    "modification_date": "2025-10-10",
+    "still_updated": 1
+}
+
+### overwiew
+GET http://localhost:8080//api/overview
+
+### list
+GET http://localhost:8080//api/list
+
+### info
+GET http://localhost:8080//api/info?name=collection
+
+### add Backup
+POST http://localhost:8080/api/Backup
+Content-Type: application/json
+
+{
+    "name": "collection",
+    "backup_name": "backup1",
+    "date": "2025-10-10",
+    "location": "BTH"
+}

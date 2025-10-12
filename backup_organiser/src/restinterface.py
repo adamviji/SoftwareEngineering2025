@@ -24,7 +24,6 @@ def add_collection():
     """Lägg till ny collection"""
     try:
         data = request.get_json()
-
         collection_mgr.add_collection(
             name=data["name"],
             description=data["description"],
@@ -32,9 +31,7 @@ def add_collection():
             last_modified_date=data["modification_date"],
             still_updated=data["still_updated"],
         )
-
         return jsonify({"status": "success", "message": "Collection added"}), 201
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -43,9 +40,8 @@ def add_collection():
 def get_overview():
     """Hämta översikt"""
     try:
-        overview = collection_mgr.overview_json()
+        overview = collection_mgr.overview()
         return jsonify(overview), 200
-
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -54,7 +50,7 @@ def get_overview():
 def get_list():
     """Hämta detaljerad lista"""
     try:
-        detailed = collection_mgr.detailed_overview_json()
+        detailed = collection_mgr.detailed_overview()
         return jsonify(detailed), 200
 
     except Exception as e:
@@ -63,41 +59,32 @@ def get_list():
 
 @app.route("/api/info", methods=["GET"])
 def get_info():
-    """Hämta info för specifik collection"""
+    """hämta info om lista"""
+    name = request.args.get("name")
     try:
-        collection_name = request.args.get("name")
-
-        if not collection_name:
-            return jsonify({"error": "Missing 'name' parameter"}), 400
-
-        info = collection_mgr.info_json(collection_name)
-
-        if "error" in info:
-            return jsonify(info), 404
-
-        return jsonify(info), 200
-
+        info_list = collection_mgr.info(name)
+        return jsonify(info_list), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/api/backup", methods=["POST"])
+@app.route("/api/Backup", methods=["POST"])
 def add_backup():
-    """Lägg till backup"""
+    """add a backup"""
     try:
         data = request.get_json()
+        print(data)
+        collection_name = data["name"]
 
-        success = backup_mgr.add_backup(
-            collection_name=data["name"],
-            backup_name=data["backupname"],
+        collection_object = collection_mgr.get(collection_name)
+        backup_mgr.add_backup(
+            collection_object=collection_object,
+            backup_name=data["backup_name"],
             backup_date=data["date"],
             backup_location=data["location"],
         )
 
-        if success:
-            return jsonify({"status": "success", "message": "Backup added"}), 201
-        else:
-            return jsonify({"error": "Collection not found"}), 404
+        return jsonify({"status": "success", "message": "Backup added"}), 201
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
