@@ -40,7 +40,21 @@ class DataCollection:
         """Körs inte om inte om listan är tom"""
         if self.backup_entries:
             info_list.append("Backups: ")
+            # Ändrat till dict - VISA JOHAN!!!
             for backup in self.backup_entries:
-                info_list.append(f" - {backup}")
-
+                """Plocka ut name, date, location från dictionary"""
+                info_list.append(
+                    f"  - {backup['name']} ({backup['date']}) at {backup['location']}"
+                )
         return info_list
+
+    def to_dict(self):
+        """Konverterar till dictionary för JSON"""
+        return {
+            "name": self.name,
+            "description": self.description,
+            "creation_date": self.creation_date,
+            "last_modified_date": self.last_modified_date,
+            "still_updated": self.still_updated,
+            "backups": self.backup_entries
+        }

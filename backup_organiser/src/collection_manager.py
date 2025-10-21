@@ -17,34 +17,24 @@ class CollectionManager:
             still_updated
         )
         self.collections.append(new_collection)
-        """Funkade ej, bytte till varianten ovan"""
-        # new_collection = DataCollection()
-        # new_collection.name = name
-        # new_collection.description = description
-        # new_collection.creation_date = creation_date
-        # new_collection.last_modified_date = last_modified_date
-        # new_collection.still_updated = still_updated
-        # self.name = name
-        # self.description = description
-        # self.creation_date = creation_date
-        # self.modification_date = modification_date
-        # self.updated = update
-
 
     def overview(self):
-        """returnerar en lista med strängar, en sträng per DataCollection"""
+        """Returnerar översikt som JSON-objekt"""
         out = []
         for collection in self.collections:
-            """[0] skriver ner det första elementet"""
-            out.append(collection.brief_str()[0]) 
+            out.append(
+                {
+                    "name": collection.name,
+                    "backups": collection.backup_entries,  # Använd backup_entries
+                }
+            )
         return out
 
-
     def detailed_overview(self):
-        """Returnerar en array med listor av strängar, en lista per DataCollection"""
+        """Returnerar en array, en lista per DataCollection"""
         out = []
         for collection in self.collections:
-            out.append(collection.full_str())
+            out.append(collection.to_dict())
         return out
 
 
@@ -54,7 +44,7 @@ class CollectionManager:
             """Kollar om namnet på nuvarande collection matchar namn som söks"""
             if collection.name == collection_name:
                 """körs när if är true"""
-                return collection.full_str() 
+                return collection.to_dict() 
         """Om ingen match hittas körs denna och endsat då"""
         return [f"Collection {collection_name} not found"]
         pass
@@ -66,29 +56,39 @@ class CollectionManager:
             if collection.name == collection_name:
                 return collection
         return None
-# TODO Byta variabel namn!!!
-    # def edit(self, collection_name, modification_date=None, updated=None):
-    #     """Modify the first data collection that maches collection_name.
 
-    #     Return the modified data collection.
+    def edit(self, collection_name, last_modified_date=None, still_updated=None):
+        """Redigera en collection"""
+        for collection in self.collections:
+            if collection.name == collection_name:
+                """ Uppdatera last_modified_date om den finns """
+                if last_modified_date is not None:
+                    collection.last_modified_date = last_modified_date
+                """Uppdatera still_updated om den finns"""
+                if still_updated is not None:
+                    """ Konvertera string "true"/"false" till boolean"""
+                    if isinstance(still_updated, str):
+                        collection.still_updated = still_updated.lower() == "true"
+                    else:
+                        collection.still_updated = bool(still_updated)
+                return True
+        return False
 
-    #     """
-    #     dc = self.get(collection_name)
-    #     if dc and None != modification_date:
-    #         dc.modification_date = modification_date
-    #     if dc and None != updated:
-    #         dc.still_updated = updated
-    #     return dc
+    def delete(self, collection_name):
+        """Tar bort den första data collection som matchar collection_name.
+        Returnerar TRUE om en collection hittas och tas bort, annars FALSE"""
+        old_len = len(self.collections)
+        self.collections = [x for x in self.collections if x.name != collection_name]
+        new_len = len(self.collections)
+        return new_len == old_len - 1
 
-    # def delete(self, collection_name):
-    #     """Delete the first data collection that matches collection_name.
-
-    #     Return True if a collection was found and deleted, otherwise False."""
-
-    #     old_len = len(self.__collections)
-    #     self.__collections = [
-    #         x for x in self.__collections if x.name != collection_name
-    #     ]
-    #     new_len = len(self.__collections)
-
-    #     return new_len == old_len - 1
+    def search(self, search_term):
+        """Söker collections och returnerar som JSON"""
+        result = []
+        search_lower = search_term.lower()
+        for collection in self.collections:
+            if search_lower in collection.name.lower():
+                result.append({
+                    "name": collection.name, 
+                    "backups": collection.backup_entries})
+        return result
